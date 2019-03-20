@@ -5,6 +5,7 @@ const bcryptService = require('../services/bcrypt.service');
 const AuthController = () => {
   const register = async (req, res) => {
     const {
+      username,
       email,
       password,
       password2,
@@ -13,6 +14,7 @@ const AuthController = () => {
     if (password === password2) {
       try {
         const user = await User.create({
+          username,
           email,
           password,
         });
@@ -20,7 +22,8 @@ const AuthController = () => {
 
         return res.status(200).json({ token, user });
       } catch (err) {
-        console.log(err);
+        console.log(err.message);
+        console.log(err.stack);
         return res.status(500).json({ msg: 'Internal server error' });
       }
     }

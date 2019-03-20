@@ -1,0 +1,9 @@
+<p *ngIf="!jokes || !jokes.length">
+  You have no favorite joke yet
+  To find some follow the <a routerLink="../random">link</a>
+</p>
+<ul *ngIf="jokes">
+  <li *ngFor="let joke of jokes">
+    {{joke.joke}} <button (click)="remove(joke.id)">X</button>
+  </li>
+</ul>

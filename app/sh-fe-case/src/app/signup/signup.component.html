@@ -1,0 +1,29 @@
+<form #signupForm="ngForm" (submit)="onSubmit()">
+  <div>
+    <label>
+      <p>username</p>
+      <input required type="text" name="username" [(ngModel)]="user.username">
+    </label>
+  </div>
+  <div>
+    <label>
+      <p>email</p>
+      <input required type="email" name="email" [(ngModel)]="user.email">
+    </label>
+  </div>
+  <div>
+    <label>
+      <p>password</p>
+      <input required type="password" name="password" [(ngModel)]="user.password">
+    </label>
+  </div>
+  <div>
+    <label>
+      <p>please retype the password</p>
+      <input required type="password" name="password2" [(ngModel)]="user.password2">
+    </label>
+  </div>
+  <div>
+    <button type="submit" [disabled]="!signupForm.valid || user.password !== user.password2">Submit</button>
+  </div>
+</form>

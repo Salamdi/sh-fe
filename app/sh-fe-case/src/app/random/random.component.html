@@ -1,0 +1,9 @@
+<div *ngIf="jokes && jokes.length">
+  <ul>
+    <li *ngFor="let joke of jokes">
+      {{joke.joke}}
+      <button (click)="add(joke)" *ngIf="!joke.favorite" [disabled]="favoritesCount === 10">add</button>
+      <button (click)="remove(joke.id)" *ngIf="joke.favorite">remove</button>
+    </li>
+  </ul>
+</div>

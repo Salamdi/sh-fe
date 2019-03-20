@@ -5,15 +5,15 @@ const { Joke } = require('./Joke');
 
 User.belongsToMany(Joke, {
   through: {
-    model: 'UserJoke'
-  }
+    model: 'UserJoke',
+  },
 });
 
 Joke.belongsToMany(User, {
   through: {
-    model: 'UserJoke'
-  }
-})
+    model: 'UserJoke',
+  },
+});
 
 module.exports = {
   Note,

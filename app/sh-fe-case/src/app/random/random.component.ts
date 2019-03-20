@@ -47,7 +47,7 @@ export class RandomComponent implements OnInit {
           this.jokes = this.jokes
             .map(rand => rand.id === id ? { ...rand, favorite: true } : rand);
           this.favorites.jokes.push(joke);
-          this.favoritesCount++;
+          ++this.favoritesCount;
         },
         complete: () => this.favoriteSubscription.unsubscribe()
       });
@@ -58,7 +58,7 @@ export class RandomComponent implements OnInit {
       .subscribe({
         next: id => {
           this.favorites.jokes = this.favorites.jokes.filter(fav => fav.id !== id);
-          this.favoritesCount--;
+          --this.favoritesCount;
           this.jokes = this.jokes.map(joke => {
             const favorite = this.favorites.jokes.find(fav => fav.id === joke.id);
             return favorite ? { ...joke, favorite: true } : { ...joke, favorite: false };

@@ -14,7 +14,7 @@ const {
   updateNote,
   deleteNote,
 } = require('./mutations');
-const {jokeQuery} = require('./queries');
+const { jokeQuery } = require('./queries');
 const {
   addToFavorites,
   removeFromFavorites,

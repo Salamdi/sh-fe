@@ -14,6 +14,11 @@ const {
   updateNote,
   deleteNote,
 } = require('./mutations');
+const { jokeQuery } = require('./queries');
+const {
+  addToFavorites,
+  removeFromFavorites,
+} = require('./mutations');
 
 const RootQuery = new GraphQLObjectType({
   name: 'rootQuery',
@@ -21,9 +26,9 @@ const RootQuery = new GraphQLObjectType({
   fields: () => ({
     user: userQuery,
     note: noteQuery,
+    jokes: jokeQuery,
   }),
 });
-
 const RootMutation = new GraphQLObjectType({
   name: 'rootMutation',
   description: 'This is the root mutation which holds all possible WRITE entrypoints for the GraphQL API',
@@ -33,6 +38,8 @@ const RootMutation = new GraphQLObjectType({
     createNote,
     updateNote,
     deleteNote,
+    addToFavorites,
+    removeFromFavorites,
   }),
 });
 

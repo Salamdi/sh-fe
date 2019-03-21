@@ -1,0 +1,14 @@
+<p *ngIf="!jokes || !jokes.length">
+  You have no favorite joke yet
+  To find some follow the <a routerLink="../random"><strong style="text-decoration: underline;">link</strong></a>
+</p>
+<ul class="node page full" *ngIf="jokes">
+  <li *ngFor="let joke of jokes" class="paragraph usp full">
+    <div class="header" style="text-align: center;" style="text-align: center;">
+        <button (click)="remove(joke.id)" class="button">Remove</button>
+    </div>
+    <div class="description">
+        {{joke.joke}}
+    </div>
+  </li>
+</ul>

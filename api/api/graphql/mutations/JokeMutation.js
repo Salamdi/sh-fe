@@ -7,38 +7,40 @@ const {
 const { JokeType } = require('../types');
 const { User, Joke } = require('../../models');
 
-const addToFavorites = {
+const createJoke = {
   type: JokeType,
-  description: 'The mutation that allows you to add a Joke to user\' favorite list',
+  description: 'Creates Joke',
   args: {
     id: {
       name: 'id',
-      type: new GraphQLNonNull(GraphQLInt),
-    },
-    userId: {
-      name: 'userId',
       type: new GraphQLNonNull(GraphQLInt),
     },
     joke: {
       name: 'joke',
       type: new GraphQLNonNull(GraphQLString),
     },
+    userId: {
+      name: 'userId',
+      type: new GraphQLNonNull(GraphQLInt),
+    },
   },
-  resolve: async (value, { id, userId, joke }) => {
+  async resolve(_, { id, userId, joke }) {
     const user = await User.findByPk(userId);
-    const { length: count } = await user.getJokes();
-    if (count === 10) {
-      throw new Error('limit of 10 jokes is exceeded');
+    const jokesCount = await user.countJokes();
+    if (jokesCount > 9) {
+      throw new Error('You have reached maximum amount of favorite jokes');
     }
-    const [newJoke] = await Joke.findOrCreate({ where: { id }, defaults: { joke } });
-    user.addJoke(newJoke);
-    return newJoke;
-  },
-};
+    const [ dbJoke, created ] = await Joke.findOrCreate({
+      where: { id },
+      defaults: { joke },
+    });
+    await dbJoke.addUser(userId);
+  }
+}
 
 const removeFromFavorites = {
   type: JokeType,
-  description: 'The mutation that sllows you to remove a joke from user\' favorite list',
+  description: 'Removes a joke from favs',
   args: {
     id: {
       name: 'id',
@@ -50,18 +52,14 @@ const removeFromFavorites = {
     },
   },
   resolve: async (value, { userId, id }) => {
-    const user = await User.findByPk(userId);
-    await user.removeJoke(id);
     const joke = await Joke.findByPk(id);
-    const { length: count } = await joke.getUsers();
-    if (count === 0) {
-      await Joke.destroy({ where: { id } });
+    if (joke) {
+      await joke.removeUser(userId);
     }
-    return joke;
   },
 };
 
 module.exports = {
-  addToFavorites,
   removeFromFavorites,
+  createJoke,
 };

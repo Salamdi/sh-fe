@@ -1,17 +1,16 @@
 const { Note } = require('./Note');
 const { User } = require('./User');
 const { Joke } = require('./Joke');
-// const { UserJoke } = require('./UserJoke');
 
 User.belongsToMany(Joke, {
   through: {
-    model: 'UserJoke',
+    model: 'UserJokes',
   },
 });
 
 Joke.belongsToMany(User, {
   through: {
-    model: 'UserJoke',
+    model: 'UserJokes',
   },
 });
 

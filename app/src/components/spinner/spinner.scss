@@ -1,0 +1,29 @@
+.spinner-container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  .spinner {
+    width: 10%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    border-radius: 50%;
+    border: .8em solid tomato;
+    border-color: tomato transparent tomato transparent;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

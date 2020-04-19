@@ -22,8 +22,6 @@ const AuthController = () => {
 
         return res.status(200).json({ token, user });
       } catch (err) {
-        console.log(err.message);
-        console.log(err.stack);
         return res.status(500).json({ msg: 'Internal server error' });
       }
     }
@@ -54,7 +52,6 @@ const AuthController = () => {
 
         return res.status(401).json({ msg: 'Unauthorized' });
       } catch (err) {
-        console.log(err);
         return res.status(500).json({ msg: 'Internal server error' });
       }
     }
@@ -64,13 +61,12 @@ const AuthController = () => {
 
   const validate = (req, res) => {
     const { token } = req.body;
-
     authService().verify(token, (err) => {
       if (err) {
-        return res.status(401).json({ isvalid: false, err: 'Invalid Token!' });
+        return res.status(401).json({ valid: false, err: 'Invalid Token!' });
       }
 
-      return res.status(200).json({ isvalid: true });
+      return res.status(200).json({ valid: true });
     });
   };
 

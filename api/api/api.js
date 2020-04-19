@@ -26,6 +26,7 @@ const environment = process.env.NODE_ENV;
 const api = express();
 const server = http.Server(api);
 const mappedRoutes = mapRoutes(config.publicRoutes, 'api/controllers/');
+const mappedPrivateRoutes = mapRoutes(config.privateRoutes, 'api/controllers/');
 const DB = dbService(environment, config.migrate).start();
 
 // allow cross origin requests
@@ -45,6 +46,9 @@ api.use(bodyParser.json());
 
 // public REST API
 api.use('/rest', mappedRoutes);
+
+// private REST API
+api.use('/rest', auth, mappedPrivateRoutes);
 
 // private GraphQL API
 api.post('/graphql', (req, res, next) => auth(req, res, next));

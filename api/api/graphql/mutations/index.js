@@ -9,8 +9,8 @@ const {
   deleteUser,
 } = require('./UserMutation');
 const {
-  addToFavorites,
   removeFromFavorites,
+  createJoke,
 } = require('./JokeMutation');
 
 module.exports = {
@@ -20,6 +20,6 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  addToFavorites,
   removeFromFavorites,
+  createJoke,
 };

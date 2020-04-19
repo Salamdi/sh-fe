@@ -9,6 +9,10 @@ const { User } = require('../../models');
 const jokeQuery = {
   type: new GraphQLList(JokeType),
   args: {
+    id: {
+      name: 'id',
+      type: GraphQLInt,
+    },
     userId: {
       name: 'userId',
       type: GraphQLInt,

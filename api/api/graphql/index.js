@@ -16,8 +16,8 @@ const {
 } = require('./mutations');
 const { jokeQuery } = require('./queries');
 const {
-  addToFavorites,
   removeFromFavorites,
+  createJoke,
 } = require('./mutations');
 
 const RootQuery = new GraphQLObjectType({
@@ -38,8 +38,8 @@ const RootMutation = new GraphQLObjectType({
     createNote,
     updateNote,
     deleteNote,
-    addToFavorites,
     removeFromFavorites,
+    createJoke,
   }),
 });
 

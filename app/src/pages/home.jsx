@@ -30,11 +30,11 @@ export const Home = () => {
   const [ validated, setValidated ] = useState(false);
   const storeAuth = JSON.parse(localStorage.getItem('service-house.auth'));
   if (!storeAuth) {
-    setValidated(true);
+    return <Redirect to="login" />;
   }
   if (storeAuth && !authorized && !validated) {
     fetch(
-      'http://localhost:8080/rest/validate',
+      '/rest/validate',
       {
         method: 'POST',
         body: JSON.stringify({ token: storeAuth.token }),
@@ -51,7 +51,7 @@ export const Home = () => {
 
   const { loading, error, data, refetch } = useQuery(GET_FAVS, {
     variables: {
-      userId: JSON.parse(localStorage.getItem('service-house.auth')).user.id,
+      userId: JSON.parse(localStorage.getItem('service-house.auth'))?.user.id,
     }
   });
 
@@ -63,7 +63,7 @@ export const Home = () => {
     rmFav({
       variables: {
         id,
-        userId: JSON.parse(localStorage.getItem('service-house.auth')).user.id,
+        userId: JSON.parse(localStorage.getItem('service-house.auth'))?.user.id,
       }
     }).then(result => refetch())
       .catch(err => console.error(err));
@@ -79,7 +79,7 @@ export const Home = () => {
     const newCount = count - n;
     setCount(newCount);
     if (newCount < 1) {
-      fetch('http://127.0.0.1:8080/rest/addRandom', {
+      fetch('/rest/addRandom', {
         headers: { 'Authorization': `Bearer ${ JSON.parse(localStorage.getItem('service-house.auth')).token }` }
       })
         .then(res => res.json())
@@ -89,7 +89,7 @@ export const Home = () => {
           }
         })
         .then(() => refetch())
-        .then(({data, errors}) => {
+        .then(({ data, errors }) => {
           if (errors || data?.jokes?.length === 10) {
             throw new Error('You have reached maximum amount of favorite jokes');
           }
@@ -126,7 +126,7 @@ export const Home = () => {
   return !validated ?
     <Spinner /> :
     <>
-      <Row className="justify-content-md-center">
+      <Row className="justify-content-center">
         <Col xs={10} md={4} >
           <Button block onClick={handleRandomClick} disabled={favs.length > 9}>
             {count > 3 ? 'random joke timer' : count}
@@ -134,21 +134,39 @@ export const Home = () => {
         </Col>
       </Row>
       {
-        favs.map(joke => (
-          <Row key={joke.id} className="bottom-margin">
-            <Col xs={10}>
-              {joke.joke}
-            </Col>
-            <Col xs={2}>
-              <Button
-                variant="danger"
-                onClick={() => handleClick(joke)}
-              >
-                remove
+        favs.length ?
+          favs.map(joke => (
+            <Row key={joke.id} className="bottom-margin">
+              <Col xs={10}>
+                {joke.joke}
+              </Col>
+              <Col xs={2}>
+                <Button
+                  variant="danger"
+                  onClick={() => handleClick(joke)}
+                >
+                  remove
             </Button>
-            </Col>
-          </Row>
-        ))
+              </Col>
+            </Row>
+          )) :
+          <>
+            <Row className="justify-content-center">
+              <Col className="justify-content-center">
+                <h3 className="empty-message empty-message--margin-top">You don't have favorite jokes yet</h3>
+              </Col>
+            </Row>
+            <Row className="justify-content-center">
+              <Col className="justify-content-center">
+                <h3 className="empty-message">Go to random page to pick some</h3>
+              </Col>
+            </Row>
+            <Row className="justify-content-center">
+              <Col className="justify-content-center">
+                <h3 className="empty-message">Or click the button above</h3>
+              </Col>
+            </Row>
+          </>
       }
       {
         errorMessage ?

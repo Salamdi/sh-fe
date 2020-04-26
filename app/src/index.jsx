@@ -4,7 +4,7 @@ import { Login } from './pages/login';
 import { Home } from './pages/home';
 import { Random } from './pages/random/random';
 import { Spinner } from './components/spinner';
-import { Switch, Route, BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
+import { Switch, Route, BrowserRouter as Router, Redirect, Link, useHistory } from 'react-router-dom';
 import { ApolloProvider, ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { Container, Row, Button, Nav, NavItem, NavLink } from 'react-bootstrap';
 import './style.scss';
@@ -12,37 +12,47 @@ import './style.scss';
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: 'http://localhost:8080/graphql',
+    uri: '/graphql',
     headers: {
-      'Authorization': `Bearer ${ JSON.parse(localStorage.getItem('service-house.auth')).token }`,
+      'Authorization': `Bearer ${ JSON.parse(localStorage.getItem('service-house.auth'))?.token }`,
     }
   })
 });
 
 const App = () => {
+  const history = useHistory();
+  const handleHistoryPush = path => history.push(path);
   return (
     <Container>
       <Row>
-        <Nav>
+        <Nav onSelect={handleHistoryPush} >
           <NavItem>
-            <NavLink eventKey="home">
-              <Link to="/home">favorites</Link>
+            <NavLink eventKey="login">
+              login
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink eventKey="login">
-              <Link to="/login">login</Link>
+            <NavLink eventKey="signup">
+              signup
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink eventKey="random">
-              <Link to="/random">random</Link>
+              random
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink eventKey="home">
+              favorites
             </NavLink>
           </NavItem>
         </Nav>
       </Row>
       <Switch>
         <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/signup">
           <Login />
         </Route>
         <Route path="/home">

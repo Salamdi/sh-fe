@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  web:
+    build: ./api
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - PORT=${PORT}
+      - POSTGRES_HOST=db
+    command: npm start -- -L --inspect=0.0.0.0:5858
+    volumes:
+      - ./api:/app
+    ports:
+      - "8080:8080"
+      - "5858:5858"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:11-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+
+  nginx:
+    build: ./app
+    volumes:
+      - ./app/nginx/:/etc/nginx/conf.d/
+      - ./app/dist/:/usr/share/nginx/html/
+    depends_on:
+      - web
+    ports:
+      - "8000:80"

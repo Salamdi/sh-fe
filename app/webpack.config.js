@@ -5,6 +5,10 @@ module.exports = options => ({
   },
   devServer: {
     historyApiFallback: true,
+    proxy: {
+      '/rest': 'http://localhost:8080',
+      '/graphql': 'http://localhost:8080',
+    }
   },
   module: {
     rules: [

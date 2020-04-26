@@ -39,7 +39,7 @@ export const Random = () => {
   const [ jokes, setJokes ] = useState([]);
   const { loading, error, data, refetch } = useQuery(GET_FAVS, {
     variables: {
-      userId: JSON.parse(localStorage.getItem('service-house.auth')).user.id,
+      userId: JSON.parse(localStorage.getItem('service-house.auth'))?.user?.id,
     }
   });
   const [ errorMessage, setError ] = useState('');
@@ -63,7 +63,7 @@ export const Random = () => {
   }
 
   if (!jokes.length) {
-    fetch('http://127.0.0.1:8080/rest/random')
+    fetch('/rest/random')
       .then(res => res.json())
       .then(({ type, value }) => {
         if (type === 'success') {

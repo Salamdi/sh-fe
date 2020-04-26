@@ -1,1 +1,10 @@
 @import "~bootstrap/scss/bootstrap";
+
+.empty-message {
+  display: flex;
+  justify-content: center;
+  
+  &--margin-top {
+    margin-top: 32px;
+  }
+}

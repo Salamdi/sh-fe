@@ -31,7 +31,6 @@ services:
     build: ./app
     volumes:
       - ./app/nginx/:/etc/nginx/conf.d/
-      - ./app/dist/:/usr/share/nginx/html/
     depends_on:
       - web
     ports:
